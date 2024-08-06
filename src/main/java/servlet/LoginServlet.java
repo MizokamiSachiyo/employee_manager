@@ -70,12 +70,12 @@ public class LoginServlet extends HttpServlet {
 
 				// idとpasswordがデータベースに登録されていなかった場合
 			} else {
-
+				request.setAttribute("errorMessage", "ログイン失敗しました");
 			}
 
 			// 例外キャッチ
 		} catch (ClassNotFoundException | SQLException e) {
-			url = "err.jsp"; // エラーページのパス
+			url = "err.jsp"; // 例外発生時のエラーページ
 			e.printStackTrace();
 		}
 
