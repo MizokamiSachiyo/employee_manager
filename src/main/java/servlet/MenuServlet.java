@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,8 +30,6 @@ public class MenuServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
@@ -39,14 +38,27 @@ public class MenuServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		// リクエストのエンコーディング
 		request.setCharacterEncoding("UTF-8");
 
 		// リクエストパラメータの取得
 		String button = request.getParameter("button");
 
-		System.out.println(button);
-
 		String url = ""; // 転送用パスを格納する変数
+
+		if ("従業員一覧".equals(button)) {
+			url = "employeeList.jsp";
+		} else if ("従業員登録画面へ".equals(button)) {
+			url = "employeeRegister.jsp";
+		} else if ("経験言語登録画面へ".equals(button)) {
+			url = "languageRegister.jsp";
+		} else if ("メニュー画面へ".equals(button)) {
+			url = "menu.jsp";
+		}
+
+		// 転送
+		RequestDispatcher rd = request.getRequestDispatcher(url);
+		rd.forward(request, response);
 
 	}
 

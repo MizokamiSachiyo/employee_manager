@@ -1,6 +1,8 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,21 +10,21 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import model.entity.UserBean;
+import model.dao.EmployeeListDAO;
+import model.entity.EmployeeListBean;
 
 /**
- * Servlet implementation class LogoutServlet
+ * Servlet implementation class EmployeeListServlet
  */
-@WebServlet("/logout")
-public class LogoutServlet extends HttpServlet {
+@WebServlet("/employeeList")
+public class EmployeeListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public LogoutServlet() {
+	public EmployeeListServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -33,7 +35,7 @@ public class LogoutServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		doPost(request, response);
 	}
 
 	/**
@@ -42,23 +44,29 @@ public class LogoutServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-//		セッションの取得
-		HttpSession session = request.getSession(false);
 
-		String url = "logout.jsp"; // 転送用パスを格納する変数
+		// リクエストのエンコーディング
+		request.setCharacterEncoding("UTF-8");
 
-		if (session != null) {
-//			UserBeanをセッションから取得
-			UserBean user = (UserBean) session.getAttribute("user");
-//			ユーザIDを取得
-			String userId = user.getUserId();
-//			セッションの無効化
-			session.invalidate();
-//			ユーザーIDをリクエスト属性に設定
-			request.setAttribute("userId", userId);
+		// 転送用パスを格納する変数
+		String url = "employeeList.jsp";
+
+//		DAOのインスタンス化
+		EmployeeListDAO dao = new EmployeeListDAO();
+
+//		DAOのメソッド呼び出し
+		try {
+			List<EmployeeListBean> employeeList = dao.getEmployeeList();
+			System.out.println("Employee List Size: " + employeeList.size());
+//				リクエストスコープにリストをセット
+			request.setAttribute("employeeList", employeeList);
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+			url = "error.jsp";
 		}
 
-//		ログアウト後の転送
+		// 転送
 		RequestDispatcher rd = request.getRequestDispatcher(url);
 		rd.forward(request, response);
 
