@@ -8,13 +8,19 @@
 <meta charset="UTF-8">
 <title>従業員一覧画面</title>
 <style>
+.main {
+	text-align: center;
+	width: 100%;
+}
+
 table {
 	border-collapse: collapse;
 	width: 80%;
+	margin: 0 auto;
 }
 
 th, td {
-	border: 1px solid black;
+	border: 3px double gray;
 	padding: 3px;
 	text-align: center;
 }

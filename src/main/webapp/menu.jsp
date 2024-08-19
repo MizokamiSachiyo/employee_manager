@@ -5,7 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>メニュー画面</title>
-<link rel="stylesheet" href="assets/stylesheets/app.css">
+<style>
+.main {
+	text-align: center;
+}
+</style>
 </head>
 <body>
   <%@ include file="header.jsp"%>

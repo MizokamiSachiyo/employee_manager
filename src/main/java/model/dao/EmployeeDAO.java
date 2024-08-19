@@ -9,7 +9,7 @@ import java.util.List;
 
 import model.entity.EmployeeListBean;
 
-public class EmployeeListDAO {
+public class EmployeeDAO {
 
 	public List<EmployeeListBean> getEmployeeList() throws ClassNotFoundException, SQLException {
 		List<EmployeeListBean> employeeList = new ArrayList<>();

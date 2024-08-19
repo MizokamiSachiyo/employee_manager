@@ -47,11 +47,11 @@ public class MenuServlet extends HttpServlet {
 		String url = ""; // 転送用パスを格納する変数
 
 		if ("従業員一覧".equals(button)) {
-			url = "employeeList.jsp";
+			url = "employeeList";
 		} else if ("従業員登録画面へ".equals(button)) {
-			url = "employeeRegister.jsp";
+			url = "employeeRegister";
 		} else if ("経験言語登録画面へ".equals(button)) {
-			url = "languageRegister.jsp";
+			url = "languageRegister";
 		} else if ("メニュー画面へ".equals(button)) {
 			url = "menu.jsp";
 		}

@@ -9,10 +9,8 @@
 .header header {
 	display: flex;
 	align-items: center;
-}
-
-.header__imageBox {
-	margin-right: 40px;
+	justify-content: space-between;
+	padding: 12px 25px;
 }
 </style>
 </head>

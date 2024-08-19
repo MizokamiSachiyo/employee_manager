@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.dao.EmployeeListDAO;
+import model.dao.EmployeeDAO;
 import model.entity.EmployeeListBean;
 
 /**
@@ -52,12 +52,11 @@ public class EmployeeListServlet extends HttpServlet {
 		String url = "employeeList.jsp";
 
 //		DAOのインスタンス化
-		EmployeeListDAO dao = new EmployeeListDAO();
+		EmployeeDAO dao = new EmployeeDAO();
 
 //		DAOのメソッド呼び出し
 		try {
 			List<EmployeeListBean> employeeList = dao.getEmployeeList();
-			System.out.println("Employee List Size: " + employeeList.size());
 //				リクエストスコープにリストをセット
 			request.setAttribute("employeeList", employeeList);
 		} catch (ClassNotFoundException | SQLException e) {
