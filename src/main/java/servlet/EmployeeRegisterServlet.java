@@ -1,19 +1,17 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.dao.LanguageDAO;
-import model.entity.LanguageBean;
+import model.dao.ConnectionManager;
 
 /**
  * Servlet implementation class EmployeeRegisterServlet
@@ -48,32 +46,41 @@ public class EmployeeRegisterServlet extends HttpServlet {
 		// リクエストのエンコーディング
 		request.setCharacterEncoding("UTF-8");
 
-		// 転送用パスを格納する変数
-		String url = "employeeRegister.jsp";
+		// フォームからのデータ取得
+		String lastName = request.getParameter("lastName");
+		String firstName = request.getParameter("firstName");
+		String gender = request.getParameter("gender");
+		String birthday = request.getParameter("birthday");
+		String phoneNumber = request.getParameter("phoneNumber");
+		String sectionCode = request.getParameter("sectionCode");
+		String languageCode = request.getParameter("languageCode");
+		String hireDate = request.getParameter("hireDate");
+	    
+        // データベースに接続し、データを挿入する
+        try (Connection con = ConnectionManager.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(
+                "INSERT INTO m_employee (l_name, f_name, gender, birthday, phone_number, section_code, language_code, hire_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
 
-//		DAOのインスタンス化
-		LanguageDAO dao = new LanguageDAO();
+            // プレースホルダに値を設定
+            pstmt.setString(1, lastName);
+            pstmt.setString(2, firstName);
+            pstmt.setString(3, gender);
+            pstmt.setString(4, birthday);
+            pstmt.setString(5, phoneNumber);
+            pstmt.setString(6, sectionCode);
+            pstmt.setString(7, languageCode);
+            pstmt.setString(8, hireDate);
 
-		try {
-			// DAOのメソッド呼び出しで言語リストを取得
-			List<LanguageBean> languageList = dao.getLanguages();
+            // SQL文を実行
+            pstmt.executeUpdate();
 
-			// languageNameのみを抽出したリストを作成
-			List<String> languageNameList = new ArrayList<>();
-			for (LanguageBean lang : languageList) {
-				languageNameList.add(lang.getLanguageName());
-			}
+            // 成功した場合の処理
+            request.getRequestDispatcher("success.jsp").forward(request, response);
 
-			// リクエストスコープにリストをセット
-			request.setAttribute("languageNameList", languageNameList);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-			url = "error.jsp"; // エラーが発生した場合、エラーページへ転送
-		}
-
-		// 転送
-		RequestDispatcher rd = request.getRequestDispatcher(url);
-		rd.forward(request, response);
-
-	}
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            // エラーページに転送
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
+    }
 }

@@ -1,10 +1,12 @@
 package model.entity;
 
-public class LanguageBean {
-//	部署コード
-	private int languageCode;
+import java.io.Serializable;
 
-//	部署名
+public class LanguageBean implements Serializable {
+//	言語コード
+	private String languageCode;
+
+//	言語名
 	private String languageName;
 
 //	デフォルトコンストラクタ
@@ -15,14 +17,14 @@ public class LanguageBean {
 	/**
 	 * @return languageCode
 	 */
-	public int getLanguageCode() {
+	public String getLanguageCode() {
 		return languageCode;
 	}
 
 	/**
 	 * @param languageCode セットする languageCode
 	 */
-	public void setLanguageCode(int languageCode) {
+	public void setLanguageCode(String languageCode) {
 		this.languageCode = languageCode;
 	}
 

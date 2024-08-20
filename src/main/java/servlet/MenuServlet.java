@@ -49,7 +49,7 @@ public class MenuServlet extends HttpServlet {
 		if ("従業員一覧".equals(button)) {
 			url = "employeeList";
 		} else if ("従業員登録画面へ".equals(button)) {
-			url = "employeeRegister";
+			url = "form";
 		} else if ("経験言語登録画面へ".equals(button)) {
 			url = "languageRegister";
 		} else if ("メニュー画面へ".equals(button)) {

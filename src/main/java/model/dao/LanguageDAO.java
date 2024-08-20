@@ -19,7 +19,7 @@ public class LanguageDAO {
 			ResultSet res = pstmt.executeQuery();
 			while (res.next()) {
 				LanguageBean Language = new LanguageBean();
-				Language.setLanguageCode(res.getInt("language_code"));
+				Language.setLanguageCode(res.getString("language_code"));
 				Language.setLanguageName(res.getString("language_name"));
 				LanguageList.add(Language);
 			}
