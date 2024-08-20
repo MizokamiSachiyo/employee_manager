@@ -70,7 +70,7 @@ public class LoginServlet extends HttpServlet {
 
 				// idとpasswordがデータベースに登録されていなかった場合
 			} else {
-				request.setAttribute("errorMessage", "ログイン失敗しました");
+				request.setAttribute("errorMessage", "ログイン失敗しました。もう一度入力してください。");
 			}
 
 			// 例外キャッチ

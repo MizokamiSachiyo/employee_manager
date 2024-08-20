@@ -10,6 +10,10 @@
 	text-align: center;
 	padding: 30px 0
 }
+
+.error-message {
+	color: red;
+}
 </style>
 </head>
 <body>
