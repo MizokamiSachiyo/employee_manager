@@ -35,4 +35,21 @@ public class EmployeeDAO {
 		}
 		return employeeList;
 	}
+	
+	public void addEmployee(EmployeeListBean employee) throws SQLException, ClassNotFoundException {
+        String sql = "INSERT INTO m_employee (l_name, f_name, gender, birthday, phone_number, section_code, language_code, hire_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        try (Connection con = ConnectionManager.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setString(1, employee.getLName());
+            pstmt.setString(2, employee.getFName());
+            pstmt.setString(3, employee.getGender());
+            pstmt.setString(4, employee.getBirthday());
+            pstmt.setString(5, employee.getPhoneNumber());
+            pstmt.setString(6, employee.getSectionCode());
+            pstmt.setString(7, employee.getLanguageCode());
+            pstmt.setString(8, employee.getHireDate());
+            pstmt.executeUpdate();
+        }
+    }
 }

@@ -1,8 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -11,7 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.dao.ConnectionManager;
+import model.dao.EmployeeDAO;
+import model.entity.EmployeeListBean;
 
 /**
  * Servlet implementation class EmployeeRegisterServlet
@@ -55,32 +54,26 @@ public class EmployeeRegisterServlet extends HttpServlet {
 		String sectionCode = request.getParameter("sectionCode");
 		String languageCode = request.getParameter("languageCode");
 		String hireDate = request.getParameter("hireDate");
-	    
-        // データベースに接続し、データを挿入する
-        try (Connection con = ConnectionManager.getConnection();
-             PreparedStatement pstmt = con.prepareStatement(
-                "INSERT INTO m_employee (l_name, f_name, gender, birthday, phone_number, section_code, language_code, hire_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
 
-            // プレースホルダに値を設定
-            pstmt.setString(1, lastName);
-            pstmt.setString(2, firstName);
-            pstmt.setString(3, gender);
-            pstmt.setString(4, birthday);
-            pstmt.setString(5, phoneNumber);
-            pstmt.setString(6, sectionCode);
-            pstmt.setString(7, languageCode);
-            pstmt.setString(8, hireDate);
+		// EmployeeListBeanにデータをセット
+		EmployeeListBean employee = new EmployeeListBean();
+		employee.setLName(lastName);
+		employee.setFName(firstName);
+		employee.setGender(gender);
+		employee.setBirthday(birthday);
+		employee.setPhoneNumber(phoneNumber);
+		employee.setSectionCode(sectionCode);
+		employee.setLanguageCode(languageCode);
+		employee.setHireDate(hireDate);
 
-            // SQL文を実行
-            pstmt.executeUpdate();
-
-            // 成功した場合の処理
-            request.getRequestDispatcher("success.jsp").forward(request, response);
-
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-            // エラーページに転送
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        }
-    }
+		// EmployeeDAOを使ってデータベースに追加
+		EmployeeDAO employeeDAO = new EmployeeDAO();
+		try {
+			employeeDAO.addEmployee(employee);
+			request.getRequestDispatcher("success.jsp").forward(request, response);
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+			request.getRequestDispatcher("error.jsp").forward(request, response);
+		}
+	}
 }
