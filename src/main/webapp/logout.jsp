@@ -5,6 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>ログアウト画面</title>
+<style>
+.main {
+	text-align: center;
+}
+</style>
 </head>
 <body>
 	<div class="main">

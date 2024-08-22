@@ -1,8 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,16 +13,16 @@ import model.dao.EmployeeDAO;
 import model.entity.EmployeeListBean;
 
 /**
- * Servlet implementation class EmployeeListServlet
+ * Servlet implementation class EmployeeDetailServlet
  */
-@WebServlet("/employeeList")
-public class EmployeeListServlet extends HttpServlet {
+@WebServlet("/EmployeeDetail")
+public class EmployeeDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public EmployeeListServlet() {
+	public EmployeeDetailServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -44,41 +42,36 @@ public class EmployeeListServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		// リクエストのエンコーディング
 		request.setCharacterEncoding("UTF-8");
 
 		// 転送用パスを格納する変数
-		String url = "employeeList.jsp";
-
-		// 検索ワードを取得
-		String searchWord = request.getParameter("searchWord");
+		String url = "employeeDetail.jsp";
 
 		// DAOのインスタンス化
 		EmployeeDAO dao = new EmployeeDAO();
-
+		
 		try {
-			List<EmployeeListBean> employeeList;
-
-			// 検索ワードが空の場合は全リストを取得
-			if (searchWord == null || searchWord.isEmpty()) {
-				employeeList = dao.getEmployeeList();
-			} else {
-				// 検索ワードが指定されている場合は検索を行う
-				employeeList = dao.searchEmployee(searchWord);
-			}
-
-			// リクエストスコープにリストをセット
-			if (employeeList.isEmpty()) {
-				request.setAttribute("message", "該当する従業員がいません");
-			} else {
-				request.setAttribute("employeeList", employeeList);
-			}
-
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-			url = "error.jsp";
+			//リクエストパラメーターから従業員IDを取得
+			String employeeId = request.getParameter("employeeId");
+			
+			// 従業員情報を取得
+            EmployeeListBean employee = dao.getEmployeeId(employeeId);
+            
+            if(employee != null) {
+            	// 従業員情報をリクエストスコープにセット
+                request.setAttribute("employee", employee);
+            } else {
+                // 従業員が見つからない場合
+                url = "employeeList.jsp"; // 従業員一覧ページにリダイレクト
+                
+            } catch (ClassNotFoundException | SQLException e) {
+                
+            }
+		
 		}
+		
+		
 
 		// 転送
 		RequestDispatcher rd = request.getRequestDispatcher(url);

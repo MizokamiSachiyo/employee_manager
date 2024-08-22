@@ -70,7 +70,7 @@ public class EmployeeRegisterServlet extends HttpServlet {
 		EmployeeDAO employeeDAO = new EmployeeDAO();
 		try {
 			employeeDAO.addEmployee(employee);
-			request.getRequestDispatcher("success.jsp").forward(request, response);
+			request.getRequestDispatcher("employeeList").forward(request, response);
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 			request.getRequestDispatcher("error.jsp").forward(request, response);

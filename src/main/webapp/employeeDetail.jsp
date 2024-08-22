@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>従業員一覧画面</title>
+<title>従業員詳細</title>
 <style>
 .main {
 	text-align: center;
@@ -27,24 +27,18 @@ th, td {
 </style>
 </head>
 <body>
+<body>
 	<%@ include file="header.jsp"%>
 	<div class="main">
 		<main>
-			<h2>従業員一覧</h2>
-			<form action="employeeList" method="post">
-				<input type="text" name="searchWord"> <input type="submit"
-					value="従業員検索">
-			</form>
 			<%
-			String message = (String) request.getAttribute("message");
-			List<EmployeeListBean> employeeList = (List<EmployeeListBean>) request.getAttribute("employeeList");
-
-			if (message != null) {
+			EmployeeListBean employee = (EmployeeListBean) request.getAttribute("employee");
+			if (employee != null) {
 			%>
-				<p><%=message%></p>
-			<%
-			} else if (employeeList != null && !employeeList.isEmpty()) {
-			%>
+			<h2><%=employee.getLName()%>
+				<%=employee.getFName()%>
+				さん 詳細
+			</h2>
 			<table border="1">
 				<thead>
 					<tr>
@@ -61,9 +55,6 @@ th, td {
 					</tr>
 				</thead>
 				<tbody>
-					<%
-					for (EmployeeListBean employee : employeeList) {
-					%>
 					<tr>
 						<td><%=employee.getEmployeeId()%></td>
 						<td><%=employee.getLName()%></td>
@@ -75,10 +66,17 @@ th, td {
 						<td><%=employee.getLanguageCode()%></td>
 						<td><%=employee.getHireDate()%></td>
 						<td>
-							<form action="employeeDetail" method="post">
+							<form action="employee-edit" method="post">
 								<input type="hidden" name="employeeId"
 									value="<%=employee.getEmployeeId()%>"> <input
-									type="submit" value="詳細">
+									type="submit" name="button" value="編集">
+							</form>
+						</td>
+						<td>
+							<form action="employee-delete" method="post">
+								<input type="hidden" name="employeeId"
+									value="<%=employee.getEmployeeId()%>"> <input
+									type="submit" name="button" value="削除">
 							</form>
 						</td>
 					</tr>
@@ -87,12 +85,9 @@ th, td {
 					%>
 				</tbody>
 			</table>
-			<form action="menu" method="post">
-				<input type="submit" name="button" value="メニュー画面へ">
+			<form action="employeeList" method="post">
+				<input type="submit" name="button" value="従業員一覧">
 			</form>
-			<%
-			}
-			%>
 		</main>
 	</div>
 </body>

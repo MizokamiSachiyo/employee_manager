@@ -52,4 +52,63 @@ public class EmployeeDAO {
             pstmt.executeUpdate();
         }
     }
+	
+	public List<EmployeeListBean> searchEmployee(String lastName) throws SQLException, ClassNotFoundException {
+	    List<EmployeeListBean> employeeList = new ArrayList<>();
+	    
+	    String sql = "SELECT * FROM m_employee WHERE l_name LIKE ?";
+	    
+	    try (Connection con = ConnectionManager.getConnection();
+	         PreparedStatement pstmt = con.prepareStatement(sql)) {
+	        
+	        pstmt.setString(1, "%" + lastName + "%");
+	        
+	        try (ResultSet res = pstmt.executeQuery()) {
+	            while (res.next()) {
+	                EmployeeListBean employee = new EmployeeListBean();
+	                employee.setEmployeeId(res.getInt("employee_id"));
+	                employee.setLName(res.getString("l_name"));
+	                employee.setFName(res.getString("f_name"));
+	                employee.setGender(res.getString("gender"));
+	                employee.setBirthday(res.getString("birthday"));
+	                employee.setPhoneNumber(res.getString("phone_number"));
+	                employee.setSectionCode(res.getString("section_code"));
+	                employee.setLanguageCode(res.getString("language_code"));
+	                employee.setHireDate(res.getString("hire_date"));
+	                employeeList.add(employee);
+	            }
+	        }
+	    }
+	    
+	    return employeeList;
+	}
+	
+	public EmployeeListBean getEmployeeId(int employeeId) throws SQLException, ClassNotFoundException {
+	    EmployeeListBean employee = null;
+	    String sql = "SELECT * FROM m_employee WHERE employee_id = ?";
+
+	    try (Connection con = ConnectionManager.getConnection();
+	         PreparedStatement pstmt = con.prepareStatement(sql)) {
+
+	        pstmt.setInt(1, employeeId);
+
+	        try (ResultSet res = pstmt.executeQuery()) {
+	            if (res.next()) {
+	                employee = new EmployeeListBean();
+	                employee.setEmployeeId(res.getInt("employee_id"));
+	                employee.setLName(res.getString("l_name"));
+	                employee.setFName(res.getString("f_name"));
+	                employee.setGender(res.getString("gender"));
+	                employee.setBirthday(res.getString("birthday"));
+	                employee.setPhoneNumber(res.getString("phone_number"));
+	                employee.setSectionCode(res.getString("section_code"));
+	                employee.setLanguageCode(res.getString("language_code"));
+	                employee.setHireDate(res.getString("hire_date"));
+	            }
+	        }
+	    }
+	    return employee;
+	}
+
+
 }
